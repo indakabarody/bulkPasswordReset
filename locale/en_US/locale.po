@@ -1,0 +1,130 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OJS 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:00-0800\n"
+"PO-Revision-Date: 2026-05-26 12:00-0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "plugins.generic.bulkPasswordReset.displayName"
+msgstr "Bulk Password Reset"
+
+msgid "plugins.generic.bulkPasswordReset.description"
+msgstr "Allows Journal Managers to bulk reset passwords for users in a specific role."
+
+msgid "plugins.generic.bulkPasswordReset.toolName"
+msgstr "Bulk Reset Tool"
+
+msgid "plugins.generic.bulkPasswordReset.targetRole"
+msgstr "Target Role"
+
+msgid "plugins.generic.bulkPasswordReset.targetRoleDescription"
+msgstr "Select the user role for which all associated accounts will have their passwords reset."
+
+msgid "plugins.generic.bulkPasswordReset.passwordLength"
+msgstr "Password Length"
+
+msgid "plugins.generic.bulkPasswordReset.charTypes"
+msgstr "Character Types"
+
+msgid "plugins.generic.bulkPasswordReset.charUppercase"
+msgstr "Uppercase Letters (A-Z)"
+
+msgid "plugins.generic.bulkPasswordReset.charLowercase"
+msgstr "Lowercase Letters (a-z)"
+
+msgid "plugins.generic.bulkPasswordReset.charNumber"
+msgstr "Numbers (0-9)"
+
+msgid "plugins.generic.bulkPasswordReset.charSymbol"
+msgstr "Symbols (!@#$%...)"
+
+msgid "plugins.generic.bulkPasswordReset.error.roleRequired"
+msgstr "Please select a target role."
+
+msgid "plugins.generic.bulkPasswordReset.error.lengthRequired"
+msgstr "Password length is required."
+
+msgid "plugins.generic.bulkPasswordReset.error.lengthMin"
+msgstr "Password length must be at least 8 characters."
+
+msgid "plugins.generic.bulkPasswordReset.confirmWarning"
+msgstr "Warning: You are about to reset passwords for {$count} user(s) with the role '{$roleName}'. This action cannot be undone."
+
+msgid "plugins.generic.bulkPasswordReset.confirmCheckbox"
+msgstr "Yes, I understand and want to continue."
+
+msgid "plugins.generic.bulkPasswordReset.error.confirmRequired"
+msgstr "You must check the confirmation box to proceed."
+
+msgid "plugins.generic.bulkPasswordReset.execute"
+msgstr "Execute Reset"
+
+msgid "plugins.generic.bulkPasswordReset.successMessage"
+msgstr "Passwords have been successfully reset. The users will be forced to change their passwords upon their next login."
+
+msgid "plugins.generic.bulkPasswordReset.downloadCsv"
+msgstr "Download CSV Export"
+
+msgid "plugins.generic.bulkPasswordReset.downloadNotice"
+msgstr "This CSV file contains the new plain text passwords. It can only be downloaded once. Please save it securely."
+
+msgid "plugins.generic.bulkPasswordReset.downloadError"
+msgstr "Error downloading file. It may have expired or already been downloaded."
+
+msgid "plugins.generic.bulkPasswordReset.next"
+msgstr "Next"
+
+msgid "plugins.generic.bulkPasswordReset.additionalOptions"
+msgstr "Additional Options"
+
+msgid "plugins.generic.bulkPasswordReset.mustChangePassword"
+msgstr "Force users to change their password on their next login"
+
+msgid "plugins.generic.bulkPasswordReset.sendEmail"
+msgstr "Send the new password to the user's email address immediately"
+
+msgid "plugins.generic.bulkPasswordReset.emailSubject"
+msgstr "Your password has been reset"
+
+msgid "plugins.generic.bulkPasswordReset.emailBody"
+msgstr "Dear {$name},\n\nYour password for {$journalName} has been reset.\n\nYour new login details are:\nUsername: {$username}\nPassword: {$password}\n\nYou can log in here: {$loginUrl}\n\nRegards,\n{$principalContactSignature}"
+
+msgid "plugins.generic.bulkPasswordReset.globalUserWarning"
+msgstr "Note: OJS user accounts are global. If a user in this journal also has roles in other journals, their password will be changed everywhere. They must use the new password to log in to all journals."
+
+msgid "plugins.generic.bulkPasswordReset.allJournalRoles"
+msgstr "All Roles in this Journal"
+
+msgid "plugins.generic.bulkPasswordReset.allOjsRoles"
+msgstr "All Roles in this OJS Installation (WARNING: Affects all journals and site admins!)"
+
+msgid "plugins.generic.bulkPasswordReset.resetScope"
+msgstr "Reset Scope"
+
+msgid "plugins.generic.bulkPasswordReset.resetAll"
+msgstr "Reset ALL users in this role"
+
+msgid "plugins.generic.bulkPasswordReset.resetSpecific"
+msgstr "Reset specific users only"
+
+msgid "plugins.generic.bulkPasswordReset.resetSpecificDisabled"
+msgstr "Reset specific users only (Disabled: Too many users to display)"
+
+msgid "plugins.generic.bulkPasswordReset.selectUsers"
+msgstr "Select the users you want to reset:"
+
+msgid "plugins.generic.bulkPasswordReset.name"
+msgstr "Name"
+
+msgid "plugins.generic.bulkPasswordReset.username"
+msgstr "Username"
+
+msgid "plugins.generic.bulkPasswordReset.email"
+msgstr "Email Address"

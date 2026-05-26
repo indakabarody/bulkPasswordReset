@@ -1,0 +1,130 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OJS 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:00-0800\n"
+"PO-Revision-Date: 2026-05-26 12:00-0800\n"
+"Last-Translator: Indaka Barody\n"
+"Language-Team: \n"
+"Language: id_ID\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "plugins.generic.bulkPasswordReset.displayName"
+msgstr "Plugin Reset Password Massal"
+
+msgid "plugins.generic.bulkPasswordReset.description"
+msgstr "Memungkinkan Manajer Jurnal untuk melakukan reset password secara massal untuk pengguna dengan peran tertentu."
+
+msgid "plugins.generic.bulkPasswordReset.toolName"
+msgstr "Alat Reset Massal"
+
+msgid "plugins.generic.bulkPasswordReset.targetRole"
+msgstr "Target Peran"
+
+msgid "plugins.generic.bulkPasswordReset.targetRoleDescription"
+msgstr "Pilih peran pengguna di mana semua akun yang terkait akan direset passwordnya."
+
+msgid "plugins.generic.bulkPasswordReset.passwordLength"
+msgstr "Panjang Password"
+
+msgid "plugins.generic.bulkPasswordReset.charTypes"
+msgstr "Jenis Karakter"
+
+msgid "plugins.generic.bulkPasswordReset.charUppercase"
+msgstr "Huruf Kapital (A-Z)"
+
+msgid "plugins.generic.bulkPasswordReset.charLowercase"
+msgstr "Huruf Kecil (a-z)"
+
+msgid "plugins.generic.bulkPasswordReset.charNumber"
+msgstr "Angka (0-9)"
+
+msgid "plugins.generic.bulkPasswordReset.charSymbol"
+msgstr "Simbol (!@#$%...)"
+
+msgid "plugins.generic.bulkPasswordReset.error.roleRequired"
+msgstr "Silakan pilih peran target."
+
+msgid "plugins.generic.bulkPasswordReset.error.lengthRequired"
+msgstr "Panjang password wajib diisi."
+
+msgid "plugins.generic.bulkPasswordReset.error.lengthMin"
+msgstr "Panjang password minimal 8 karakter."
+
+msgid "plugins.generic.bulkPasswordReset.confirmWarning"
+msgstr "Peringatan: Anda akan mereset password untuk {$count} pengguna dengan peran '{$roleName}'. Tindakan ini tidak dapat dibatalkan."
+
+msgid "plugins.generic.bulkPasswordReset.confirmCheckbox"
+msgstr "Ya, saya mengerti dan ingin melanjutkan."
+
+msgid "plugins.generic.bulkPasswordReset.error.confirmRequired"
+msgstr "Anda harus mencentang kotak konfirmasi untuk melanjutkan."
+
+msgid "plugins.generic.bulkPasswordReset.execute"
+msgstr "Eksekusi Reset"
+
+msgid "plugins.generic.bulkPasswordReset.successMessage"
+msgstr "Password berhasil direset. Pengguna akan dipaksa untuk mengubah password mereka saat login berikutnya."
+
+msgid "plugins.generic.bulkPasswordReset.downloadCsv"
+msgstr "Unduh Ekspor CSV"
+
+msgid "plugins.generic.bulkPasswordReset.downloadNotice"
+msgstr "File CSV ini berisi password teks biasa (plain text) yang baru. File ini hanya dapat diunduh sekali. Harap simpan dengan aman."
+
+msgid "plugins.generic.bulkPasswordReset.downloadError"
+msgstr "Gagal mengunduh file. Mungkin sudah kedaluwarsa atau sudah diunduh sebelumnya."
+
+msgid "plugins.generic.bulkPasswordReset.next"
+msgstr "Lanjut"
+
+msgid "plugins.generic.bulkPasswordReset.additionalOptions"
+msgstr "Opsi Tambahan"
+
+msgid "plugins.generic.bulkPasswordReset.mustChangePassword"
+msgstr "Wajibkan pengguna untuk mengubah password pada login berikutnya"
+
+msgid "plugins.generic.bulkPasswordReset.sendEmail"
+msgstr "Kirim password baru langsung ke email pengguna"
+
+msgid "plugins.generic.bulkPasswordReset.emailSubject"
+msgstr "Password Anda telah direset"
+
+msgid "plugins.generic.bulkPasswordReset.emailBody"
+msgstr "Halo {$name},\n\nPassword Anda untuk {$journalName} telah direset.\n\nDetail login baru Anda adalah:\nUsername: {$username}\nPassword: {$password}\n\nAnda dapat login di sini: {$loginUrl}\n\nSalam,\n{$principalContactSignature}"
+
+msgid "plugins.generic.bulkPasswordReset.globalUserWarning"
+msgstr "Catatan: Akun pengguna OJS bersifat global di seluruh instalasi. Jika pengguna di jurnal ini juga memiliki peran di jurnal lain, password mereka akan berubah di semua jurnal. Mereka harus menggunakan password baru ini untuk login ke seluruh jurnal."
+
+msgid "plugins.generic.bulkPasswordReset.allJournalRoles"
+msgstr "Semua Peran di Jurnal ini"
+
+msgid "plugins.generic.bulkPasswordReset.allOjsRoles"
+msgstr "Semua Peran di satu OJS (PERINGATAN: Berdampak pada semua jurnal dan admin situs!)"
+
+msgid "plugins.generic.bulkPasswordReset.resetScope"
+msgstr "Cakupan Reset"
+
+msgid "plugins.generic.bulkPasswordReset.resetAll"
+msgstr "Reset SEMUA akun dalam peran ini"
+
+msgid "plugins.generic.bulkPasswordReset.resetSpecific"
+msgstr "Reset akun tertentu saja"
+
+msgid "plugins.generic.bulkPasswordReset.resetSpecificDisabled"
+msgstr "Reset akun tertentu saja (Dinonaktifkan: Terlalu banyak akun untuk ditampilkan)"
+
+msgid "plugins.generic.bulkPasswordReset.selectUsers"
+msgstr "Pilih akun yang ingin Anda reset:"
+
+msgid "plugins.generic.bulkPasswordReset.name"
+msgstr "Nama Lengkap"
+
+msgid "plugins.generic.bulkPasswordReset.username"
+msgstr "Username"
+
+msgid "plugins.generic.bulkPasswordReset.email"
+msgstr "Alamat Email"
