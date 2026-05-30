@@ -54,6 +54,9 @@ msgstr "Panjang password wajib diisi."
 msgid "plugins.generic.bulkPasswordReset.error.lengthMin"
 msgstr "Panjang password minimal 8 karakter."
 
+msgid "plugins.generic.bulkPasswordReset.error.journalRequired"
+msgstr "Silakan pilih minimal satu jurnal untuk direset."
+
 msgid "plugins.generic.bulkPasswordReset.confirmWarning"
 msgstr "Peringatan: Anda akan mereset password untuk {$count} pengguna dengan peran '{$roleName}'. Tindakan ini tidak dapat dibatalkan."
 
@@ -128,3 +131,24 @@ msgstr "Username"
 
 msgid "plugins.generic.bulkPasswordReset.email"
 msgstr "Alamat Email"
+
+msgid "plugins.generic.bulkPasswordReset.selectJournals"
+msgstr "Pilih Jurnal"
+
+msgid "plugins.generic.bulkPasswordReset.journal"
+msgstr "Jurnal"
+
+msgid "plugins.generic.bulkPasswordReset.initial"
+msgstr "Inisial"
+
+msgid "plugins.generic.bulkPasswordReset.path"
+msgstr "Path"
+
+msgid "plugins.generic.bulkPasswordReset.selectAll"
+msgstr "Pilih Semua"
+
+msgid "plugins.generic.bulkPasswordReset.deselectAll"
+msgstr "Batal Pilih Semua"
+
+msgid "plugins.generic.bulkPasswordReset.allSelectedJournalsRoles"
+msgstr "Semua Akun di Jurnal Terpilih"

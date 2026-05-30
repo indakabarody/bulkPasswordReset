@@ -16,12 +16,14 @@
 	<input type="hidden" name="mustChangePassword" value="{$mustChangePassword|escape}" />
 	<input type="hidden" name="sendEmail" value="{$sendEmail|escape}" />
 
+	{foreach from=$selectedContexts item=ctxId}
+		<input type="hidden" name="selectedContexts[]" value="{$ctxId|escape}" />
+	{/foreach}
+
 	{fbvFormArea id="bulkPasswordResetConfirmFormArea"}
-		
+
 		<div class="pkp_notification pkp_notification_warning">
 			{translate key="plugins.generic.bulkPasswordReset.confirmWarning" count=$userCount roleName=$roleName}
-			<br><br>
-			<strong>{translate key="plugins.generic.bulkPasswordReset.globalUserWarning"}</strong>
 		</div>
 
 		{fbvFormSection title="plugins.generic.bulkPasswordReset.resetScope" list=true}
@@ -34,12 +36,15 @@
 		{/fbvFormSection}
 
 		{if !$tooManyUsers}
-		<div id="specificUsersList" style="display: none; max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;">
-			<p><strong>{translate key="plugins.generic.bulkPasswordReset.selectUsers"}</strong></p>
-			<table class="pkp_table" width="100%" style="text-align: left;">
+		<div id="specificUsersList" style="display: none; max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 3px;">
+			<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+				<p style="margin: 0;"><strong>{translate key="plugins.generic.bulkPasswordReset.selectUsers"}</strong></p>
+				<input type="text" id="userSearchFilter" placeholder="Search users..." style="padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 250px;" />
+			</div>
+			<table class="pkp_table" width="100%" style="text-align: left; margin: 0;" id="usersTable">
 				<thead>
 					<tr>
-						<th width="10%"></th>
+						<th width="10%"><input type="checkbox" id="selectAllUsers" /></th>
 						<th width="30%">{translate key="plugins.generic.bulkPasswordReset.name"}</th>
 						<th width="20%">{translate key="plugins.generic.bulkPasswordReset.username"}</th>
 						<th width="40%">{translate key="plugins.generic.bulkPasswordReset.email"}</th>
@@ -66,9 +71,30 @@
 						$('#specificUsersList').slideUp();
 					}
 				});
+
+				// Select all users toggle
+				$('#selectAllUsers').click(function() {
+					$('.user_checkbox:visible').prop('checked', this.checked);
+				});
+
+				// Simple search filter
+				$('#userSearchFilter').on('keyup', function() {
+					var value = $(this).val().toLowerCase();
+					$('#usersTable tbody tr').filter(function() {
+						var text = $(this).text().toLowerCase();
+						$(this).toggle(text.indexOf(value) > -1);
+						if ($(this).is(':hidden')) {
+							$(this).find('.user_checkbox').prop('checked', false);
+						}
+					});
+				});
 			});
 		</script>
 		{/if}
+
+		<div class="pkp_notification pkp_notification_warning">
+			<strong>{translate key="plugins.generic.bulkPasswordReset.globalUserWarning"}</strong>
+		</div>
 
 		{fbvFormSection list=true}
 			{fbvElement type="checkbox" id="confirmReset" required="true" label="plugins.generic.bulkPasswordReset.confirmCheckbox"}

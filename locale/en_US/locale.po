@@ -54,6 +54,9 @@ msgstr "Password length is required."
 msgid "plugins.generic.bulkPasswordReset.error.lengthMin"
 msgstr "Password length must be at least 8 characters."
 
+msgid "plugins.generic.bulkPasswordReset.error.journalRequired"
+msgstr "Please select at least one journal to reset."
+
 msgid "plugins.generic.bulkPasswordReset.confirmWarning"
 msgstr "Warning: You are about to reset passwords for {$count} user(s) with the role '{$roleName}'. This action cannot be undone."
 
@@ -128,3 +131,24 @@ msgstr "Username"
 
 msgid "plugins.generic.bulkPasswordReset.email"
 msgstr "Email Address"
+
+msgid "plugins.generic.bulkPasswordReset.selectJournals"
+msgstr "Select Journals to Reset"
+
+msgid "plugins.generic.bulkPasswordReset.journal"
+msgstr "Journal"
+
+msgid "plugins.generic.bulkPasswordReset.initial"
+msgstr "Initial"
+
+msgid "plugins.generic.bulkPasswordReset.path"
+msgstr "Path"
+
+msgid "plugins.generic.bulkPasswordReset.selectAll"
+msgstr "Select All"
+
+msgid "plugins.generic.bulkPasswordReset.deselectAll"
+msgstr "Deselect All"
+
+msgid "plugins.generic.bulkPasswordReset.allSelectedJournalsRoles"
+msgstr "All Users in Selected Journals"

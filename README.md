@@ -1,4 +1,4 @@
-# Bulk Password Reset Plugin for OJS 3.3
+# Bulk Password Reset Plugin v1.1.0 for OJS 3.3
 
 **Bulk Password Reset** is a generic plugin for Open Journal Systems (OJS) 3.3 designed to allow Journal Managers to reset passwords in bulk for all users in a specific role (e.g., Reviewers, Authors, Editors) within a single journal context.
 
@@ -8,8 +8,8 @@ The plugin provides advanced features like specific user selection, forced passw
 
 ## Key Features
 
-- **Context-Specific Scope**: Operates strictly within the current journal context. Users with roles in other journals remain unaffected unless explicitly chosen.
-- **Role-Based Targeting**: Easily target specific groups such as Journal Managers, Editors, Section Editors, Reviewers, Authors, Reader groups, **All Roles in the Journal**, or **All Roles in the entire OJS installation**.
+- **Context-Specific Scope & Multi-Journal Support**: For Journal Managers, operates strictly within the current journal context. **Site Administrators** can select multiple journals (or all journals) from a searchable table to apply resets across various journals simultaneously.
+- **Role-Based Targeting**: Easily target specific groups such as Journal Managers, Editors, Section Editors, Reviewers, Authors, Reader groups, or **All Roles in the selected journals**.
 - **User Selection**: Option to select specific users within the chosen role to reset passwords. If the user count exceeds 500, this feature is automatically disabled to ensure performance.
 - **Customizable Password Generation**:
   - Set custom password lengths (minimum 8 characters).
@@ -63,7 +63,8 @@ The plugin provides advanced features like specific user selection, forced passw
 2. Expand the **Bulk Password Reset** generic plugin using the blue disclosure arrow.
 3. Click **Bulk Reset Tool** (Settings).
 4. **Step 1: Configuration**
-   - Select the target user role (e.g., specific roles, all journal roles, or all OJS roles).
+   - **(Site Admins Only)** Select which journals to target using the searchable journals list.
+   - Select the target user role (e.g., specific roles, or all roles in selected journals).
    - Choose your password length and character requirements.
    - Choose additional options: **Force users to change their password on their next login** and/or **Send the new password to the user's email address immediately**.
    - Click **Next**.

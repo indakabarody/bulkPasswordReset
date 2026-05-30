@@ -54,6 +54,26 @@ class BulkPasswordResetPlugin extends GenericPlugin
             return $actions;
         }
 
+        import('lib.pkp.classes.security.Validation');
+        import('lib.pkp.classes.security.Role');
+
+        $user = $request->getUser();
+        if (!$user) {
+            return $actions;
+        }
+
+        $context = $request->getContext();
+        $isSiteAdmin = Validation::isSiteAdmin();
+        $isManager = false;
+        if ($context) {
+            $roleDao = DAORegistry::getDAO('RoleDAO');
+            $isManager = $roleDao->userHasRole($context->getId(), $user->getId(), ROLE_ID_MANAGER);
+        }
+
+        if (!$isSiteAdmin && !$isManager) {
+            return $actions;
+        }
+
         $router = $request->getRouter();
         import('lib.pkp.classes.linkAction.request.AjaxModal');
         $linkAction = new LinkAction(
@@ -79,6 +99,26 @@ class BulkPasswordResetPlugin extends GenericPlugin
      */
     public function manage($args, $request)
     {
+        import('lib.pkp.classes.security.Validation');
+        import('lib.pkp.classes.security.Role');
+
+        $user = $request->getUser();
+        if (!$user) {
+            return new JSONMessage(false, __('user.authorization.accessDenied'));
+        }
+
+        $context = $request->getContext();
+        $isSiteAdmin = Validation::isSiteAdmin();
+        $isManager = false;
+        if ($context) {
+            $roleDao = DAORegistry::getDAO('RoleDAO');
+            $isManager = $roleDao->userHasRole($context->getId(), $user->getId(), ROLE_ID_MANAGER);
+        }
+
+        if (!$isSiteAdmin && !$isManager) {
+            return new JSONMessage(false, __('user.authorization.roleBasedAccessDenied'));
+        }
+
         switch ($request->getUserVar('verb')) {
             case 'settings':
                 $this->import('BulkPasswordResetSettingsForm');

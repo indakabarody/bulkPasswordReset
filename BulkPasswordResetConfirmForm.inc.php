@@ -51,7 +51,7 @@ class BulkPasswordResetConfirmForm extends Form
      */
     public function readInputData()
     {
-        $this->readUserVars(['confirmReset', 'roleId', 'passwordLength', 'charUppercase', 'charLowercase', 'charNumber', 'charSymbol', 'mustChangePassword', 'sendEmail', 'resetType', 'selectedUserIds']);
+        $this->readUserVars(['confirmReset', 'roleId', 'passwordLength', 'charUppercase', 'charLowercase', 'charNumber', 'charSymbol', 'mustChangePassword', 'sendEmail', 'resetType', 'selectedUserIds', 'selectedContexts']);
     }
 
     /**
@@ -64,26 +64,57 @@ class BulkPasswordResetConfirmForm extends Form
 
         $context = $request->getContext();
 
+        import('lib.pkp.classes.security.Validation');
+        $isSiteAdmin = Validation::isSiteAdmin();
+        $selectedContexts = $this->getData('selectedContexts') ?? $this->params['selectedContexts'] ?? [];
+        if (!$isSiteAdmin || empty($selectedContexts)) {
+            $selectedContexts = [$context->getId()];
+        }
+        $templateMgr->assign('selectedContexts', $selectedContexts);
+
         $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
         $roleId = $this->getData('roleId') ?? $this->params['roleId'];
 
         if ($roleId === 'all_journal') {
-            $templateMgr->assign('roleName', __('plugins.generic.bulkPasswordReset.allJournalRoles'));
-            $users = clone $userGroupDao->getUsersByContextId($context->getId());
-            $templateMgr->assign('userCount', $users->getCount());
-        } elseif ($roleId === 'all_ojs') {
-            $templateMgr->assign('roleName', __('plugins.generic.bulkPasswordReset.allOjsRoles'));
-            $userCount = \Illuminate\Database\Capsule\Manager::table('users')->count();
+            if ($isSiteAdmin && count($selectedContexts) > 1) {
+                $templateMgr->assign('roleName', __('plugins.generic.bulkPasswordReset.allSelectedJournalsRoles'));
+            } else {
+                $templateMgr->assign('roleName', __('plugins.generic.bulkPasswordReset.allJournalRoles'));
+            }
+            $userIds = \Illuminate\Database\Capsule\Manager::table('user_user_groups as uug')
+                ->join('user_groups as ug', 'uug.user_group_id', '=', 'ug.user_group_id')
+                ->whereIn('ug.context_id', $selectedContexts)
+                ->select('uug.user_id')
+                ->distinct()
+                ->pluck('user_id')
+                ->toArray();
+            $userCount = count($userIds);
             $templateMgr->assign('userCount', $userCount);
         } else {
             $userGroup = $userGroupDao->getById($roleId, $context->getId());
 
             if ($userGroup) {
-                $templateMgr->assign('roleName', $userGroup->getLocalizedName());
-                $userCount = $userGroupDao->getContextUsersCount($context->getId(), $roleId);
-                $templateMgr->assign('userCount', $userCount);
+                if ($isSiteAdmin) {
+                    $templateMgr->assign('roleName', $userGroup->getLocalizedName() . (count($selectedContexts) > 1 ? ' (Multiple Journals)' : ''));
+                    $targetRoleId = $userGroup->getRoleId();
+                    $userIds = \Illuminate\Database\Capsule\Manager::table('user_user_groups as uug')
+                        ->join('user_groups as ug', 'uug.user_group_id', '=', 'ug.user_group_id')
+                        ->whereIn('ug.context_id', $selectedContexts)
+                        ->where('ug.role_id', $targetRoleId)
+                        ->select('uug.user_id')
+                        ->distinct()
+                        ->pluck('user_id')
+                        ->toArray();
+                    $userCount = count($userIds);
+                    $templateMgr->assign('userCount', $userCount);
+                } else {
+                    $templateMgr->assign('roleName', $userGroup->getLocalizedName());
+                    $userCount = $userGroupDao->getContextUsersCount($context->getId(), $roleId);
+                    $templateMgr->assign('userCount', $userCount);
+                }
             } else {
                 $templateMgr->assign('roleName', 'Unknown');
+                $userCount = 0;
                 $templateMgr->assign('userCount', 0);
             }
         }
@@ -92,29 +123,32 @@ class BulkPasswordResetConfirmForm extends Form
         $templateMgr->assign('tooManyUsers', $tooManyUsers);
 
         if (!$tooManyUsers) {
-            if ($roleId === 'all_journal') {
-                $users = clone $userGroupDao->getUsersByContextId($context->getId());
-            } elseif ($roleId === 'all_ojs') {
-                $result = \Illuminate\Database\Capsule\Manager::table('users')->get();
-                $usersArray = [];
-                $userDao = DAORegistry::getDAO('UserDAO');
-                foreach ($result as $row) {
-                    $usersArray[] = $userDao->getById($row->user_id);
+            $userDao = DAORegistry::getDAO('UserDAO');
+            $usersArray = [];
+            
+            if (isset($userIds)) {
+                // $userIds is set if we used the custom Capsule queries (all_journal OR isSiteAdmin)
+                foreach ($userIds as $uid) {
+                    $u = $userDao->getById($uid);
+                    if ($u) $usersArray[] = $u;
                 }
-                import('lib.pkp.classes.core.ArrayItemIterator');
-                $users = new ArrayItemIterator($usersArray);
             } else {
+                // Fallback for regular Journal Managers
                 $users = $userGroupDao->getUsersById($roleId, $context->getId());
+                while ($u = $users->next()) {
+                    $usersArray[] = $u;
+                }
             }
 
             $userList = [];
-            while ($user = $users->next()) {
+            foreach ($usersArray as $user) {
                 $userList[$user->getId()] = [
                     'name' => $user->getFullName(),
                     'username' => $user->getUsername(),
                     'email' => $user->getEmail(),
                 ];
             }
+            
             $templateMgr->assign('userList', $userList);
         }
 
@@ -147,6 +181,13 @@ class BulkPasswordResetConfirmForm extends Form
         $resetType = $this->getData('resetType') ?: 'all';
         $selectedUserIds = (array) $this->getData('selectedUserIds');
 
+        import('lib.pkp.classes.security.Validation');
+        $isSiteAdmin = Validation::isSiteAdmin();
+        $selectedContexts = $this->getData('selectedContexts') ?: [];
+        if (!$isSiteAdmin || empty($selectedContexts)) {
+            $selectedContexts = [$context->getId()];
+        }
+
         // At least one char type must be selected
         if (!$useUpper && !$useLower && !$useNum && !$useSym) {
             $useLower = true;
@@ -154,17 +195,43 @@ class BulkPasswordResetConfirmForm extends Form
         }
 
         if ($roleId === 'all_journal') {
-            $users = $userGroupDao->getUsersByContextId($context->getId());
-        } elseif ($roleId === 'all_ojs') {
-            $result = \Illuminate\Database\Capsule\Manager::table('users')->get();
+            $userIds = \Illuminate\Database\Capsule\Manager::table('user_user_groups as uug')
+                ->join('user_groups as ug', 'uug.user_group_id', '=', 'ug.user_group_id')
+                ->whereIn('ug.context_id', $selectedContexts)
+                ->select('uug.user_id')
+                ->distinct()
+                ->pluck('user_id')
+                ->toArray();
             $usersArray = [];
-            foreach ($result as $row) {
-                $usersArray[] = $userDao->getById($row->user_id);
+            foreach ($userIds as $uid) {
+                $u = $userDao->getById($uid);
+                if ($u) $usersArray[] = $u;
             }
-            import('lib.pkp.classes.core.ArrayItemIterator');
-            $users = new ArrayItemIterator($usersArray);
         } else {
-            $users = $userGroupDao->getUsersById($roleId, $context->getId());
+            $userGroup = $userGroupDao->getById($roleId, $context->getId());
+            if ($userGroup && $isSiteAdmin) {
+                $targetRoleId = $userGroup->getRoleId();
+                $userIds = \Illuminate\Database\Capsule\Manager::table('user_user_groups as uug')
+                    ->join('user_groups as ug', 'uug.user_group_id', '=', 'ug.user_group_id')
+                    ->whereIn('ug.context_id', $selectedContexts)
+                    ->where('ug.role_id', $targetRoleId)
+                    ->select('uug.user_id')
+                    ->distinct()
+                    ->pluck('user_id')
+                    ->toArray();
+                
+                $usersArray = [];
+                foreach ($userIds as $uid) {
+                    $u = $userDao->getById($uid);
+                    if ($u) $usersArray[] = $u;
+                }
+            } else {
+                $users = $userGroupDao->getUsersById($roleId, $context->getId());
+                $usersArray = [];
+                while ($u = $users->next()) {
+                    $usersArray[] = $u;
+                }
+            }
         }
 
         $csvData = [];
@@ -172,7 +239,7 @@ class BulkPasswordResetConfirmForm extends Form
 
         import('lib.pkp.classes.security.Validation');
 
-        while ($user = $users->next()) {
+        foreach ($usersArray as $user) {
             // If specific reset is selected, skip users not in the selected array
             if ($resetType === 'specific' && !in_array($user->getId(), $selectedUserIds)) {
                 continue;

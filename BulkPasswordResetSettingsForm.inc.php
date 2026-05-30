@@ -33,6 +33,14 @@ class BulkPasswordResetSettingsForm extends Form
                 return (int) $length >= 8;
             }),
         );
+        import('lib.pkp.classes.security.Validation');
+        if (Validation::isSiteAdmin()) {
+            $this->addCheck(
+                new FormValidatorCustom($this, 'selectedContexts', 'required', 'plugins.generic.bulkPasswordReset.error.journalRequired', function ($selectedContexts) {
+                    return is_array($selectedContexts) && count($selectedContexts) > 0;
+                }),
+            );
+        }
         $this->addCheck(new FormValidatorPost($this));
         $this->addCheck(new FormValidatorCSRF($this));
     }
@@ -56,7 +64,7 @@ class BulkPasswordResetSettingsForm extends Form
      */
     public function readInputData()
     {
-        $this->readUserVars(['roleId', 'passwordLength', 'charUppercase', 'charLowercase', 'charNumber', 'charSymbol', 'mustChangePassword', 'sendEmail']);
+        $this->readUserVars(['roleId', 'passwordLength', 'charUppercase', 'charLowercase', 'charNumber', 'charSymbol', 'mustChangePassword', 'sendEmail', 'selectedContexts']);
     }
 
     /**
@@ -69,14 +77,31 @@ class BulkPasswordResetSettingsForm extends Form
 
         $context = $request->getContext();
 
+        import('lib.pkp.classes.security.Validation');
+        $isSiteAdmin = Validation::isSiteAdmin();
+        $templateMgr->assign('isSiteAdmin', $isSiteAdmin);
+
         // Get available user groups for the current context
         $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
         $userGroups = $userGroupDao->getByContextId($context->getId());
 
-        $userGroupOptions = [
-            'all_journal' => __('plugins.generic.bulkPasswordReset.allJournalRoles'),
-            'all_ojs' => __('plugins.generic.bulkPasswordReset.allOjsRoles'),
-        ];
+        $userGroupOptions = [];
+
+        if ($isSiteAdmin) {
+            $userGroupOptions['all_journal'] = __('plugins.generic.bulkPasswordReset.allSelectedJournalsRoles');
+
+            $contextDao = Application::getContextDAO();
+            $contexts = $contextDao->getAll();
+            $contextOptions = [];
+            while ($journal = $contexts->next()) {
+                $contextOptions[$journal->getId()] = [
+                    'name' => $journal->getLocalizedName(),
+                    'acronym' => $journal->getLocalizedAcronym(),
+                    'path' => $journal->getPath(),
+                ];
+            }
+            $templateMgr->assign('contextOptions', $contextOptions);
+        }
 
         while ($userGroup = $userGroups->next()) {
             $userGroupOptions[$userGroup->getId()] = $userGroup->getLocalizedName();
@@ -102,6 +127,7 @@ class BulkPasswordResetSettingsForm extends Form
             'charSymbol' => $this->getData('charSymbol') ? 1 : 0,
             'mustChangePassword' => $this->getData('mustChangePassword') ? 1 : 0,
             'sendEmail' => $this->getData('sendEmail') ? 1 : 0,
+            'selectedContexts' => $this->getData('selectedContexts') ?: [],
         ];
     }
 }
